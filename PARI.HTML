@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Birthday Parnavi</title>
+
+<style>
+body {
+    font-family: 'Segoe UI', sans-serif;
+    text-align: center;
+    margin: 0;
+    background: linear-gradient(135deg, #141e30, #243b55, #0f2027);
+    background-size: 400% 400%;
+    animation: gradientBG 10s ease infinite;
+    color: #fff;
+}
+
+@keyframes gradientBG {
+    0% {background-position: 0% 50%;}
+    50% {background-position: 100% 50%;}
+    100% {background-position: 0% 50%;}
+}
+
+.container {
+    padding: 20px;
+}
+
+h1 {
+    color: #ffd700;
+    font-size: 36px;
+}
+
+h2 {
+    color: #ffffff;
+}
+
+.header {
+    background: rgba(255,255,255,0.1);
+    backdrop-filter: blur(10px);
+    padding: 25px;
+    border-radius: 20px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.5);
+}
+
+.header img {
+    width: 220px;
+    border-radius: 20px;
+    margin-top: 15px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.7);
+}
+
+.card {
+    background: rgba(255,255,255,0.9);
+    color: #000;
+    margin: 15px auto;
+    padding: 15px;
+    width: 80%;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.4);
+}
+
+.parents {
+    border: 2px solid gold;
+    background: linear-gradient(to right, #2c3e50, #4ca1af);
+    color: #fff;
+    font-size: 16px;
+}
+
+input, textarea {
+    padding: 12px;
+    margin: 10px;
+    width: 80%;
+    border-radius: 10px;
+    border: none;
+    outline: none;
+}
+
+button {
+    padding: 12px 25px;
+    background: linear-gradient(to right, #ff8c00, #ff3c00);
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 25px;
+    font-size: 16px;
+    transition: transform 0.2s ease;
+}
+
+button:hover {
+    transform: scale(1.05);
+}
+
+footer {
+    margin-top: 40px;
+    padding: 20px;
+    color: #fff;
+}
+
+.date {
+    margin-top: 10px;
+    font-size: 14px;
+    opacity: 0.8;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- HEADER -->
+    <div class="header">
+        <h1>🎂 Happy Birthday Parnavi 🎂</h1>
+        <img src="pari.jpeg" alt="Parnavi Photo">
+
+        <p style="margin-top:15px; font-size:17px; line-height:1.6;">
+        <b>Our Dearest Parnavi,</b><br><br>
+        You are the most precious gift in our lives. Watching you grow, laugh, and shine fills our hearts with endless joy. 
+        On your 4th birthday, we wish you a world full of happiness, dreams, and magical moments.<br><br>
+
+        May your smile always stay bright and your heart always stay pure. 
+        We love you more than words can ever express. 💖<br><br>
+
+        — With love, Mumma & Pappa
+        </p>
+    </div>
+
+    <hr>
+
+    <!-- WISH SECTION -->
+    <h2>Leave Your Wishes 💌</h2>
+
+    <input type="text" id="name" placeholder="Your Name"><br>
+    <textarea id="message" placeholder="Write your wishes..."></textarea><br>
+    <input type="file" id="photo"><br>
+    <button onclick="submitWish()">Send Wishes 🎉</button>
+
+    <div id="wishes"></div>
+
+</div>
+
+<!-- FOOTER -->
+<footer>
+    <div class="card parents">
+        ✨ Thank you all for wishing our daughter on her birthday and for taking time out of your busy schedules to bless her. 
+        Your love and blessings mean a lot to us. 💖✨
+    </div>
+
+    <div class="date">
+        🎉 Birthday Date: 25th June 2026
+    </div>
+</footer>
+
+<script>
+function submitWish() {
+    let name = document.getElementById('name').value;
+    let message = document.getElementById('message').value;
+    let photo = document.getElementById('photo').files[0];
+
+    if (!name || !message) {
+        alert("Please fill all fields");
+        return;
+    }
+
+    let wishes = JSON.parse(localStorage.getItem('wishes')) || [];
+
+    let wishObj = { name, message, photo: null };
+
+    if (photo) {
+        let reader = new FileReader();
+        reader.onload = function(e) {
+            wishObj.photo = e.target.result;
+            wishes.push(wishObj);
+            localStorage.setItem('wishes', JSON.stringify(wishes));
+            displayWishes();
+        }
+        reader.readAsDataURL(photo);
+    } else {
+        wishes.push(wishObj);
+        localStorage.setItem('wishes', JSON.stringify(wishes));
+        displayWishes();
+    }
+
+    document.getElementById('name').value = "";
+    document.getElementById('message').value = "";
+}
+
+function displayWishes() {
+    let wishesDiv = document.getElementById('wishes');
+    wishesDiv.innerHTML = "";
+
+    let wishes = JSON.parse(localStorage.getItem('wishes')) || [];
+
+    wishes.forEach(w => {
+        let div = document.createElement('div');
+        div.className = 'card';
+        div.innerHTML = `<b>${w.name}</b>: ${w.message}`;
+
+        if (w.photo) {
+            let img = document.createElement('img');
+            img.src = w.photo;
+            img.style.width = '120px';
+            div.appendChild(document.createElement('br'));
+            div.appendChild(img);
+        }
+
+        wishesDiv.appendChild(div);
+    });
+}
+
+window.onload = displayWishes;
+</script>
+
+</body>
+</html>
